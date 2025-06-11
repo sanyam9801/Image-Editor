@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Image Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-image"></i> Advanced Image Editor</h1>
+            <div class="theme-toggle">
+                <span style="font-size: 14px; color: var(--text-secondary);">Theme</span>
+                <input type="checkbox" id="theme-toggle-checkbox" class="theme-toggle-checkbox">
+                <label for="theme-toggle-checkbox" class="theme-toggle-label">
+                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-moon"></i>
+                    <div class="ball"></div>
+                </label>
+            </div>
+        </div>
+        
+        <div class="wrapper">
+            <div class="editor-panel">
+                <!-- Filters Section -->
+                <div class="panel-section">
+                    <div class="section-title">
+                        <i class="fas fa-adjust"></i>
+                        Filters
+                    </div>
+                    <div class="filter-options">
+                        <button class="filter-btn active" data-filter="brightness">
+                            <i class="fas fa-sun"></i> Brightness
+                        </button>
+                        <button class="filter-btn" data-filter="saturation">
+                            <i class="fas fa-palette"></i> Saturation
+                        </button>
+                        <button class="filter-btn" data-filter="inversion">
+                            <i class="fas fa-adjust"></i> Inversion
+                        </button>
+                        <button class="filter-btn" data-filter="grayscale">
+                            <i class="fas fa-circle"></i> Grayscale
+                        </button>
+                    </div>
+                    <div class="slider-container">
+                        <div class="slider-info">
+                            <span class="filter-name">Brightness</span>
+                            <span class="slider-value filter-value">100%</span>
+                        </div>
+                        <input type="range" class="slider" id="filter-slider" value="100" min="0" max="200">
+                    </div>
+                </div>
+
+                <!-- Rotate & Flip Section -->
+                <div class="panel-section">
+                    <div class="section-title">
+                        <i class="fas fa-sync-alt"></i>
+                        Rotate & Flip
+                    </div>
+                    <div class="rotate-options">
+                        <button class="rotate-btn" data-action="left">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                        <button class="rotate-btn" data-action="right">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                        <button class="rotate-btn" data-action="horizontal">
+                            <i class="fas fa-arrows-left-right"></i>
+                        </button>
+                        <button class="rotate-btn" data-action="vertical">
+                            <i class="fas fa-arrows-up-down"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Drawing Tools Section -->
+                <div class="panel-section">
+                    <div class="section-title">
+                        <i class="fas fa-paint-brush"></i>
+                        Drawing Tools
+                    </div>
+                    <button class="tool-btn" id="toggle-draw">
+                        <i class="fas fa-pencil-alt"></i>
+                        Toggle Draw Mode
+                    </button>
+                    <div class="color-picker-container hidden" id="color-picker-container">
+                        <label for="brush-color">Brush Color:</label>
+                        <input type="color" id="brush-color" value="#333333">
+                        <div class="color-palette">
+                            <div class="color-option" data-color="#000000" style="background: #000000;"></div>
+                            <div class="color-option" data-color="#ff0000" style="background: #ff0000;"></div>
+                            <div class="color-option" data-color="#00ff00" style="background: #00ff00;"></div>
+                            <div class="color-option" data-color="#0000ff" style="background: #0000ff;"></div>
+                            <div class="color-option" data-color="#ffff00" style="background: #ffff00;"></div>
+                            <div class="color-option" data-color="#ff00ff" style="background: #ff00ff;"></div>
+                            <div class="color-option" data-color="#00ffff" style="background: #00ffff;"></div>
+                            <div class="color-option" data-color="#ffffff" style="background: #ffffff; border: 1px solid #ccc;"></div>
+                        </div>
+                    </div>
+                    <div class="slider-container hidden" id="brush-slider">
+                        <div class="slider-info">
+                            <span>Brush Size</span>
+                            <span class="slider-value" id="brush-value">5px</span>
+                        </div>
+                        <input type="range" class="slider" id="brush-size-slider" value="5" min="1" max="50">
+                    </div>
+                </div>
+
+                <!-- Additional Tools Section -->
+              
+            </div>
+            
+            <div class="preview-section">
+                <div class="image-container" id="image-container">
+                    <div class="placeholder-content" id="placeholder">
+                        <i class="fas fa-image"></i>
+                        <h3>No Image Selected</h3>
+                        <p>Choose an image to start editing</p>
+                        <button class="primary-btn" id="choose-placeholder">
+                            <i class="fas fa-upload"></i>
+                            Choose Image
+                        </button>
+                    </div>
+                    <img class="preview-img hidden" id="preview-img" alt="preview">
+                    <canvas id="canvas" class="hidden"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <button class="danger-btn" id="reset-btn">
+                    <i class="fas fa-refresh"></i>
+                    Reset All
+                </button>
+                <button class="secondary-btn" id="undo-btn">
+                    <i class="fas fa-undo"></i>
+                    Undo
+                </button>
+            </div>
+            
+            <div class="control-group">
+                <input type="file" id="file-input" accept="image/*" hidden>
+                <button class="secondary-btn" id="choose-img-btn">
+                    <i class="fas fa-upload"></i>
+                    Choose Image
+                </button>
+                <div class="save-options">
+                    <button class="primary-btn" id="save-img-btn">
+                        <i class="fas fa-download"></i>
+                        Save Image
+                    </button>
+                    <div class="download-options hidden" id="download-options">
+                        <button id="save-as-jpg">
+                            <i class="fas fa-file-image"></i>
+                            Save as JPEG
+                        </button>
+                        <button id="save-as-png">
+                            <i class="fas fa-file-image"></i>
+                            Save as PNG
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src = "script.js"></script>
+</body>
+</html>
